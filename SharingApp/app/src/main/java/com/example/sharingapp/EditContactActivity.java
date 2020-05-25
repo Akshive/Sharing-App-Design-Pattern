@@ -21,11 +21,14 @@ public class EditContactActivity extends AppCompatActivity implements Observer{
     private EditText email;
     private EditText username;
     private Context context;
+    private int pos;
     private ListView my_contacts;
     private ArrayAdapter<Contact> adapter;
 
     private ContactListController contactListController = new ContactListController(contact_list);
     private ContactController contactController;
+
+    private boolean on_create_update = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +40,9 @@ public class EditContactActivity extends AppCompatActivity implements Observer{
         contactListController.loadContacts(context);
 
         Intent intent = getIntent();
-        int pos = intent.getIntExtra("position", 0);
+        pos = intent.getIntExtra("position", 0);
 
-        contact = contactListController.getContact(pos);
-        contactController = new ContactController(contact);
-
-        username = (EditText) findViewById(R.id.username);
-        email = (EditText) findViewById(R.id.email);
-
-        username.setText(contactController.getUsername());
-        email.setText(contactController.getEmail());
+        on_create_update = false;
     }
 
     public void saveContact(View view) {
@@ -79,7 +75,6 @@ public class EditContactActivity extends AppCompatActivity implements Observer{
         if(!success){
             return;
         }
-        contactListController.removeObserver(this);
         // End EditContactActivity
         finish();
     }
@@ -90,15 +85,27 @@ public class EditContactActivity extends AppCompatActivity implements Observer{
         if(!success){
             return;
         }
-        contactListController.removeObserver(this);
         // End EditContactActivity
         finish();
     }
 
+    @Override
+    protected  void onDestroy(){
+        super.onDestroy();
+        contactListController.removeObserver(this);
+    }
+
     public void update(){
-            my_contacts = (ListView) findViewById(R.id.my_contacts);
-            adapter = new ContactAdapter(EditContactActivity.this, contactListController.getContacts());
-            my_contacts.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+        if(on_create_update){
+            contact = contactListController.getContact(pos);
+            contactController = new ContactController(contact);
+
+            username = (EditText) findViewById(R.id.username);
+            email = (EditText) findViewById(R.id.email);
+
+            // Update the view
+            username.setText(contactController.getUsername());
+            email.setText(contactController.getEmail());
+        }
     }
 }

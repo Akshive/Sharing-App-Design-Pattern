@@ -22,14 +22,6 @@ public class ContactListController {
         return contactList.getAllUsernames();
     }
 
-    public void addContact(Contact contact) {
-        contactList.addContact(contact);
-    }
-
-    public void deleteContact(Contact contact) {
-        contactList.deleteContact(contact);
-    }
-
     public Contact getContact(int index) {
         return contactList.getContact(index);
     }
@@ -58,9 +50,6 @@ public class ContactListController {
         contactList.loadContacts(context);
     }
 
-    public boolean saveContacts(Context context) {
-        return contactList.saveContacts(context);
-    }
 
     public boolean addContact(Contact contact, Context context){
         AddContactCommand addContactCommand = new AddContactCommand(contactList, contact, context);

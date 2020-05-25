@@ -35,4 +35,14 @@ public class ContactController {
     public void setEmail(String email) {
         contact.setEmail(email);
     }
+
+    public Contact getContact() {return this.contact;}
+
+    public void addObserver(Observer observer){
+        contact.addObserver(observer);
+    }
+
+    public void removeObserver(Observer observer){
+        contact.removeObserver(observer);
+    }
 }

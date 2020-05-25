@@ -18,6 +18,6 @@ public class EditContactCommand extends Command{
     public void execute() {
         contactList.deleteContact(oldContact);
         contactList.addContact(newContact);
-        contactList.saveContacts(context);
+        super.setIsExecuted(contactList.saveContacts(context));
     }
 }
